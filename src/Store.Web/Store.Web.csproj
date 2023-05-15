@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Store.Web-4cee34a8-d11d-4af9-b098-213035aea74f</UserSecretsId>
   </PropertyGroup>
