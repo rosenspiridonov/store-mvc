@@ -12,7 +12,7 @@ using Store.Web.Data;
 namespace Store.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230515172229_MainEntitiesCreation")]
+    [Migration("20230515183357_MainEntitiesCreation")]
     partial class MainEntitiesCreation
     {
         /// <inheritdoc />
@@ -258,17 +258,14 @@ namespace Store.Web.Data.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -426,7 +423,7 @@ namespace Store.Web.Data.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Status");
 

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using Store.Data;
 using Store.Web.Data;
+using Store.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ builder.Services
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.RegisterServices();
 
 builder.Services.AddControllersWithViews();
 
@@ -50,5 +54,8 @@ app.MapControllerRoute(
 );
 
 app.MapRazorPages();
+
+await app.MigrateDatabaseAsync<ApplicationDbContext>();
+await app.SeedDatabaseAsync();
 
 app.Run();
