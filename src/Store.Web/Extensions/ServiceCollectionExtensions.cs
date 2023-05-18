@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-using Store.Data;
+﻿using Store.Data;
+using Store.Services;
 
 namespace Store.Web.Extensions
 {
@@ -8,6 +7,8 @@ namespace Store.Web.Extensions
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddTransient<ProductImporter>();
+            services.AddHttpClient<ProductImporter>();
             services.AddScoped<DataSeeder>();
 
             return services;

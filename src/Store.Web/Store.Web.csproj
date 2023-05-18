@@ -13,7 +13,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Store.Commons\Store.Commons.csproj" />
-    <ProjectReference Include="..\Store.Data\Store.Data.csproj" />
+    <ProjectReference Include="..\Store.Services\Store.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

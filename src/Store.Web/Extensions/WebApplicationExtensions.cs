@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using Store.Data;
-using Store.Web.Data;
+using Store.Services;
 
 namespace Store.Web.Extensions
 {
@@ -22,7 +21,10 @@ namespace Store.Web.Extensions
                 var services = scope.ServiceProvider;
 
                 var dataSeeder = services.GetRequiredService<DataSeeder>();
+                var productImporter = services.GetRequiredService<ProductImporter>();
+
                 await dataSeeder.SeedDataAsync();
+                await productImporter.ImportProductsAsync();
             }
         }
     }
