@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Store.Data;
-using Store.Services;
+using Store.Services.Products;
 
 namespace Store.Web.Extensions
 {

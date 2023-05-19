@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Hosting;
 
 using Store.Data.Entities;
-using Store.Services.Models;
 using Store.Web.Data;
 
 using System.Text.Json;
 
-namespace Store.Services
+namespace Store.Services.Products
 {
     public class ProductImporter
     {

@@ -1,5 +1,13 @@
+*,
+::before,
+::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {
@@ -20,3 +28,51 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+a {
+    text-decoration: none;
+}
+
+.product-card {
+}
+
+    .product-card .price {
+        color: #263238;
+        font-size: 24px;
+    }
+
+    .product-card .card-title {
+        color: #263238
+    }
+
+    .product-card .sale {
+        color: #E53935
+    }
+
+    .product-card .sale-badge {
+        background-color: #E53935
+    }
+
+    .product-card .card {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: 100%;
+    }
+
+    .product-card .bg-image {
+        height: 80%;
+        display: grid;
+        place-items: center;
+        padding: 1em;
+    }
+
+        .product-card .bg-image img {
+            width: 80%;
+        }
+
+.page-size-form {
+    color: #fff;
+}
+
+    .page-size-form label {
+        font-size: 1.125rem;
+    }

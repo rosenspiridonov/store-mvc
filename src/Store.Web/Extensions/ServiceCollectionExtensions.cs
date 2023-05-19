@@ -1,5 +1,5 @@
 ﻿using Store.Data;
-using Store.Services;
+using Store.Services.Products;
 
 namespace Store.Web.Extensions
 {
@@ -10,6 +10,8 @@ namespace Store.Web.Extensions
             services.AddTransient<ProductImporter>();
             services.AddHttpClient<ProductImporter>();
             services.AddScoped<DataSeeder>();
+
+            services.AddTransient<IProductsService, ProductsService>();
 
             return services;
         }
