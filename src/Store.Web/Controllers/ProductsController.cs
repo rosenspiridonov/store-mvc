@@ -15,11 +15,13 @@ namespace Store.Web.Controllers
             _productsService = productsService;
         }
 
-        public async Task<IActionResult> All(int page = 1, int pageSize = 12)
+        public async Task<IActionResult> All(int page = 1, int pageSize = 12, string category = null)
         {
-            var products = await _productsService.All(page, pageSize);
+            var model = await _productsService.GetFilteredProducts(page, pageSize, category);
+            model.SelectedCategory = category;
+            model.Categories = await _productsService.GetAllCategories();
 
-            return View(products);
+            return View(model);
         }
     }
 }

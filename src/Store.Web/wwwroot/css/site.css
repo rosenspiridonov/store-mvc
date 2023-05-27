@@ -76,3 +76,7 @@ a {
     .page-size-form label {
         font-size: 1.125rem;
     }
+
+.nav-product-catalogue form {
+    flex-basis: 290px;
+}

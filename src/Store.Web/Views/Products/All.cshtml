@@ -1,45 +1,48 @@
-﻿@model ProductPaginationModel
+﻿@model ProductListingModel
 
 <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 shadow p-2" style="background-color: #607D8B">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Categories:</a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent2"
-                aria-controls="navbarSupportedContent2"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                <li class="nav-item acitve">
-                    <a class="nav-link text-white" href="#">All</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Shirts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Sport wears</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Outwears</a>
-                </li>
-            </ul>
-
-            TO DO: Select with categories
-
-            <form method="get" class="py-1 w-25 page-size-form">
+        <div class="collapse navbar-collapse d-flex justify-content-between nav-product-catalogue">
+            <form method="get" class="py-1 page-size-form">
                 <div class="row">
-                    <input type="hidden" name="page" asp-for="@Model.CurrentPage" />
+                    <input type="hidden" name="page" value="@Model.Pagination.CurrentPage" />
+                    <input type="hidden" name="pageSize" value="@Model.Pagination.PageSize" />
+                    <label for="category" class="col-sm-5 col-form-label">Категория:</label>
+                    <div class="col-sm-7">
+                        <select id="category" name="category" asp-for="SelectedCategory" onchange="this.form.submit()" class="form-control">
+                            @if (string.IsNullOrEmpty(Model.SelectedCategory))
+                            {
+                                <option value="" selected>-</option>
+                            }
+                            else
+                            {
+                                <option value="">-</option>
+                            }
+
+                            @foreach (var cat in Model.Categories)
+                            {
+                                if (Model.SelectedCategory == cat)
+                                {
+                                    <option value="@cat" selected>@cat</option>
+                                }
+                                else
+                                {
+                                    <option value="@cat">@cat</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <form method="get" class="py-1 page-size-form">
+                <div class="row">
+                    <input type="hidden" name="page" asp-for="@Model.Pagination.CurrentPage" />
                     <label for="pageSize" class="col-sm-6 col-form-label">Брой продукти:</label>
                     <div class="col-sm-6">
-                        <select id="pageSize" class="form-control" name="pageSize" asp-for="@Model.PageSize" asp-items="@(new SelectList(Model.PageSizes))" onchange="this.form.submit()"></select>
+                        <select id="pageSize" class="form-control" name="pageSize" asp-for="@Model.Pagination.PageSize" asp-items="@(new SelectList(Model.Pagination.PageSizes))" onchange="this.form.submit()"></select>
                     </div>
+                    <input type="hidden" name="category" asp-for="@Model.SelectedCategory" />
                 </div>
             </form>
 
@@ -51,55 +54,57 @@
         <div class="row">
             @foreach (var product in @Model.Products)
             {
-                <partial name="_ProductCardPartial" model="product"/>
+                <partial name="_ProductCardPartial" model="product" />
             }
-            
         </div>
     </div>
 </section>
 
 <!-- Pagination -->
-<nav class="d-flex justify-content-center mt-3">
-    <ul class="pagination">
-        @if (Model.CurrentPage > 1)
-        {
-            <li class="page-item">
-                <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize })" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-        }
+@if (Model.Pagination.TotalPages > 1)
+{
+    <nav class="d-flex justify-content-center mt-3">
+        <ul class="pagination">
+            @if (Model.Pagination.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.Pagination.CurrentPage - 1, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
 
-        @for (var i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" href="@Url.Action("All", "Products", new { page = i, pageSize = Model.PageSize })">@i</a>
-            </li>
-        }
+            @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.Pagination.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = i, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })">@i</a>
+                </li>
+            }
 
-        @if (Model.CurrentPage < Model.TotalPages)
-        {
-            <li class="page-item">
-                <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize })" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        }
-    </ul>
-</nav>
+            @if (Model.Pagination.CurrentPage < Model.Pagination.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.Pagination.CurrentPage + 1, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

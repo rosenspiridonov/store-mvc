@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
+using Store.Commons.Extensions;
 using Store.Web.Data;
 
 namespace Store.Services.Products
@@ -12,9 +14,13 @@ namespace Store.Services.Products
             _context = context;
         }
 
-        public async Task<ProductPaginationModel> All(int pageNumber = 1, int pageSize = 12)
+        public async Task<ProductListingModel> GetFilteredProducts(int pageNumber = 1, int pageSize = 12, string category = null)
         {
-            int totalItems = _context.Products.Count();
+            var productsQuery = _context.Products
+                .Where(!string.IsNullOrEmpty(category), x => x.ProductCategories.Any(pc => pc.Category.Name.ToLower() == category.ToLower()))
+                .AsNoTracking();
+
+            int totalItems = productsQuery.Count();
             var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
             if (pageNumber > totalPages)
@@ -22,7 +28,7 @@ namespace Store.Services.Products
                 pageNumber = 1;
             }
 
-            var products = await _context.Products
+            var products = await productsQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => new ProductModel
@@ -36,13 +42,21 @@ namespace Store.Services.Products
                 })
                 .ToListAsync();
 
-            return new ProductPaginationModel
+            return new ProductListingModel
             {
                 Products = products,
-                CurrentPage = pageNumber,
-                TotalPages = totalPages,
-                PageSize = pageSize
+                Pagination = new PaginationModel
+                {
+                    CurrentPage = pageNumber,
+                    TotalPages = totalPages,
+                    PageSize = pageSize
+                }
             };
         }
+
+        public async Task<List<string>> GetAllCategories() 
+            => await _context.Categories
+                .Select(x => x.Name)
+                .ToListAsync();
     }
 }

@@ -2,6 +2,8 @@
 {
     public interface IProductsService
     {
-        Task<ProductPaginationModel> All(int pageNumber = 1, int pageSize = 12);
+        Task<ProductListingModel> GetFilteredProducts(int pageNumber = 1, int pageSize = 12, string category = null);
+
+        Task<List<string>> GetAllCategories();
     }
 }

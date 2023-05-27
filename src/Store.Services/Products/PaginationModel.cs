@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Store.Services.Products
 {
-    public class ProductPaginationModel
+    public class PaginationModel
     {
-        public List<ProductModel> Products { get; set; }
-
         public int CurrentPage { get; set; }
 
         public int TotalPages { get; set; }
