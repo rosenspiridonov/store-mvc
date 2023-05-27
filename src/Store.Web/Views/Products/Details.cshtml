@@ -1,0 +1,26 @@
+﻿@model ProductDetailsModel
+
+<div class="row mt-5 product-wrapper">
+    <div class="col-5">
+        <img src="@Model.Product.ImageURL" class="w-100" />
+    </div>
+    <div class="col-7 ps-3">
+        <h1 class="mb-3">@Model.Product.Name</h1>
+        <hr class="w-50" size="1" />
+        <div class="mb-4">@Model.Product.Description</div>
+        <div class="mb-2 fs-3">@Model.Product.Price лв.</div>
+        <button class="btn btn-success rounded-pill buy-btn">Купи</button>
+    </div>
+</div>
+
+<div class="my-5">
+    <h4 class="mb-4">Подобни продукти</h4>
+    <div class="row">
+        @foreach (var product in Model.RelatedProducts)
+        {
+            <div class="col-md-3">
+                <partial name="_ProductCardPartial" model="product" />
+            </div>
+        }
+    </div>
+</div>

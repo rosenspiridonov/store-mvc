@@ -1,7 +1,4 @@
-﻿using Store.Data.Entities;
-using System.ComponentModel.DataAnnotations;
-
-namespace Store.Services.Products
+﻿namespace Store.Services.Products.Models
 {
     public class ProductModel
     {

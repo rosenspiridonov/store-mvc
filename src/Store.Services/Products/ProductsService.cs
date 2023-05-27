@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Store.Commons.Extensions;
+using Store.Services.Products.Models;
 using Store.Web.Data;
 
 namespace Store.Services.Products
@@ -13,6 +14,36 @@ namespace Store.Services.Products
         {
             _context = context;
         }
+
+        public async Task<ProductModel> GetById(int productId)
+            => await _context.Products
+                .Where(x => x.Id == productId)
+                .Select(x => new ProductModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageURL = x.ImageURL,
+                    CategoryName = x.ProductCategories.FirstOrDefault() == null ? string.Empty : x.ProductCategories.First().Category.Name,
+                })
+                .FirstOrDefaultAsync();
+
+        public async Task<List<ProductModel>> GetRelatedProducts(int productId, string categoryName, int? count)
+            => await _context.Products
+                .Where(!string.IsNullOrEmpty(categoryName), x => x.ProductCategories.Any(pc => pc.Category.Name.ToLower() == categoryName.ToLower()))
+                .Where(x => x.Id != productId)
+                .Take(count.HasValue, count.Value)
+                .Select(x => new ProductModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageURL = x.ImageURL,
+                    CategoryName = x.ProductCategories.FirstOrDefault() == null ? string.Empty : x.ProductCategories.First().Category.Name,
+                })
+                .ToListAsync();
 
         public async Task<ProductListingModel> GetFilteredProducts(int pageNumber = 1, int pageSize = 12, string category = null)
         {
@@ -54,7 +85,7 @@ namespace Store.Services.Products
             };
         }
 
-        public async Task<List<string>> GetAllCategories() 
+        public async Task<List<string>> GetAllCategories()
             => await _context.Categories
                 .Select(x => x.Name)
                 .ToListAsync();

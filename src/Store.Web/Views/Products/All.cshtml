@@ -58,7 +58,9 @@
                     <div class="row">
                         @foreach (var product in @Model.Products)
                         {
-                            <partial name="_ProductCardPartial" model="product" />
+                            <div class="col-lg-4 col-md-6 mb-4 pb-4 card-wrapper">
+                                <partial name="_ProductCardPartial" model="product" />
+                            </div>
                         }
                     </div>
                 </div>

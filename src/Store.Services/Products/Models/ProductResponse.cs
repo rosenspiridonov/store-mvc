@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Store.Services.Products
+namespace Store.Services.Products.Models
 {
     public class ProductResponse
     {

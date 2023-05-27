@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.Services.Products
+namespace Store.Services.Products.Models
 {
     public class PaginationModel
     {
