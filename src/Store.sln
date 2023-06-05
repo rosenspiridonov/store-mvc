@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Web", "Store.Web\Stor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Data", "Store.Data\Store.Data.csproj", "{EBCDF8A1-3FA2-487D-9599-85708770B76E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Commons", "Store.Commons\Store.Commons.csproj", "{83138BCB-BDEF-4029-92F4-B01EA30C57BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Commons", "Store.Commons\Store.Commons.csproj", "{83138BCB-BDEF-4029-92F4-B01EA30C57BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Services", "Store.Services\Store.Services.csproj", "{65812D4B-2BC2-4899-88C5-740A05DB6109}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Services", "Store.Services\Store.Services.csproj", "{65812D4B-2BC2-4899-88C5-740A05DB6109}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

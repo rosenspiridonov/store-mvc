@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Store.Web.Data.Migrations
+namespace Store.Data.Migrations
 {
     /// <inheritdoc />
     public partial class MainEntitiesCreation : Migration

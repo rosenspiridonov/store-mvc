@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Store.Web.Data.Migrations
+namespace Store.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

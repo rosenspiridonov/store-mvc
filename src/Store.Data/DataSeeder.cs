@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using Store.Data.Entities;
-using Store.Web.Data;
+using Store.Data;
 
 using static Store.Commons.Constants;
 

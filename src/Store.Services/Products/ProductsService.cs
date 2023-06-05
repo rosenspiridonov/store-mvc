@@ -2,7 +2,7 @@
 
 using Store.Commons.Extensions;
 using Store.Services.Products.Models;
-using Store.Web.Data;
+using Store.Data;
 
 namespace Store.Services.Products
 {

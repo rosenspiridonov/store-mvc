@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 using Store.Data.Entities;
 using Store.Services.Products.Models;
-using Store.Web.Data;
+using Store.Data;
 
 using System.Text.Json;
 

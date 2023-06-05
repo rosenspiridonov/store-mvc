@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using Store.Data;
-using Store.Web.Data;
+using Store.Data;
 using Store.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +46,7 @@ app
     .UseHttpsRedirection()
     .UseStaticFiles()
     .UseRouting()
+    .UseAuthentication()
     .UseAuthorization();
 
 app.MapControllerRoute(
