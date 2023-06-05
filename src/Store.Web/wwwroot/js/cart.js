@@ -8,24 +8,17 @@
             },
             body: JSON.stringify({ productId: productId, quantity: 1 })
         })
-        .then((response) => {
-            let message = {
-                text: 'Продуктът е добавен в количката',
-                status: 'success'
-            };
-
-            if (response.status === 401) {
-                message.text = 'Трябва да влезете в акаунта си, за да добавите продукт в количката си';
-                message.status = 'error';
-            } else {
-                getUserCart();
-            }
-
-            console.log(message.text)
-        })
-        .catch(function (error) {
-            console.warn('Error: ' + error?.message);
-        });
+            .then((response) => {
+                if (response.status === 401) {
+                    toastr.error('Трябва да влезете в акаунта си, за да добавите продукт в количката си');
+                } else {
+                    getUserCart();
+                    toastr.success('Продуктът е добавен в количката');
+                }
+            })
+            .catch(function (error) {
+                console.warn('Error: ' + error?.message);
+            });
     });
 });
 
@@ -51,6 +44,7 @@ document.querySelectorAll('.removeButton')?.forEach(function (button) {
                 return response;
             })
             .then(function () {
+                toastr.success('Продуктът е премахнат от количката');
                 e.target.parentElement.parentElement.remove();
             })
             .catch(function (error) {
