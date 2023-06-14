@@ -4,12 +4,16 @@ namespace Store.Services.Products
 {
     public interface IProductsService
     {
-        Task<ProductModel> GetById(int productId);
+        Task<ProductModel> GetByIdAsync(int productId);
 
-        Task<List<ProductModel>> GetRelatedProducts(int productId, string categoryName, int? count);
+        Task<List<ProductModel>> GetRelatedProductsAsync(int productId, string categoryName, int? count);
 
-        Task<ProductListingModel> GetFilteredProducts(int pageNumber = 1, int pageSize = 12, string category = null);
+        Task<ProductListingModel> GetFilteredProductsAsync(int pageNumber = 1, int pageSize = 12, string category = null);
 
-        Task<List<string>> GetAllCategories();
+        Task<ProductEditModel> CreateProductAsync(ProductEditModel productModel);
+
+        Task<int> UpdateProductAsync(ProductEditModel productModel);
+
+        Task DeleteProductAsync(int productId);
     }
 }

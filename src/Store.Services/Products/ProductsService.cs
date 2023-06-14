@@ -3,19 +3,24 @@
 using Store.Commons.Extensions;
 using Store.Services.Products.Models;
 using Store.Data;
+using Store.Data.Entities;
+using Store.Commons.Exeptions;
+using Store.Services.Images;
 
 namespace Store.Services.Products
 {
     public class ProductsService : IProductsService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public ProductsService(ApplicationDbContext context)
+        public ProductsService(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
-        public async Task<ProductModel> GetById(int productId)
+        public async Task<ProductModel> GetByIdAsync(int productId)
             => await _context.Products
                 .Where(x => x.Id == productId)
                 .Select(x => new ProductModel
@@ -29,7 +34,7 @@ namespace Store.Services.Products
                 })
                 .FirstOrDefaultAsync();
 
-        public async Task<List<ProductModel>> GetRelatedProducts(int productId, string categoryName, int? count)
+        public async Task<List<ProductModel>> GetRelatedProductsAsync(int productId, string categoryName, int? count)
             => await _context.Products
                 .Where(!string.IsNullOrEmpty(categoryName), x => x.ProductCategories.Any(pc => pc.Category.Name.ToLower() == categoryName.ToLower()))
                 .Where(x => x.Id != productId)
@@ -45,7 +50,7 @@ namespace Store.Services.Products
                 })
                 .ToListAsync();
 
-        public async Task<ProductListingModel> GetFilteredProducts(int pageNumber = 1, int pageSize = 12, string category = null)
+        public async Task<ProductListingModel> GetFilteredProductsAsync(int pageNumber = 1, int pageSize = 12, string category = null)
         {
             var productsQuery = _context.Products
                 .Where(!string.IsNullOrEmpty(category), x => x.ProductCategories.Any(pc => pc.Category.Name.ToLower() == category.ToLower()))
@@ -85,9 +90,70 @@ namespace Store.Services.Products
             };
         }
 
-        public async Task<List<string>> GetAllCategories()
-            => await _context.Categories
-                .Select(x => x.Name)
-                .ToListAsync();
+        public async Task<ProductEditModel> CreateProductAsync(ProductEditModel productModel)
+        {
+            return null;
+            var product = new Product
+            {
+                Name = productModel.Name,
+                Description = productModel.Description,
+                Price = productModel.Price
+            };
+
+            foreach (var categoryId in productModel.CategoryIds)
+            {
+                product.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
+            }
+
+            // TODO: Process image
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            productModel.Id = product.Id;
+            return productModel;
+        }
+
+        public async Task<int> UpdateProductAsync(ProductEditModel productModel)
+        {
+            var product = await _context.Products
+                .Include(p => p.ProductCategories)
+                .FirstOrDefaultAsync(p => p.Id == productModel.Id);
+            
+            if (product is null)
+            {
+                throw new UserNotificationException("Product not found");
+            }
+
+            product.Name = productModel.Name;
+            product.Description = productModel.Description;
+            product.Price = productModel.Price;
+
+            product.ProductCategories.Clear();
+            foreach (var categoryId in productModel.CategoryIds)
+            {
+                product.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
+            }
+
+            if (productModel.Image != null)
+            {
+                product.ImageURL = await _imageService.SaveImage(productModel.Image, product.Name);
+            }
+
+            await _context.SaveChangesAsync();
+            return productModel.Id;
+        }
+
+        public async Task DeleteProductAsync(int productId)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            if (product is null)
+            {
+                throw new UserNotificationException("Product not found");
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -6,6 +6,7 @@ using Store.Services.Products.Models;
 using Store.Data;
 
 using System.Text.Json;
+using Store.Services.Images;
 
 namespace Store.Services.Products
 {
@@ -13,13 +14,13 @@ namespace Store.Services.Products
     {
         private readonly HttpClient _httpClient;
         private readonly ApplicationDbContext _context;
-        private readonly IHostEnvironment _environment;
+        private readonly IImageService _imageService;
 
-        public ProductImporter(HttpClient httpClient, ApplicationDbContext context, IHostEnvironment environment)
+        public ProductImporter(HttpClient httpClient, ApplicationDbContext context, IImageService imageService)
         {
             _httpClient = httpClient;
             _context = context;
-            _environment = environment;
+            _imageService = imageService;
         }
 
         public async Task ImportProductsAsync()
@@ -51,7 +52,7 @@ namespace Store.Services.Products
                     Name = productDto.Title,
                     Description = productDto.Description,
                     Price = productDto.Price,
-                    ImageURL = await SaveImage(productDto.Images.FirstOrDefault(), productDto.Title)
+                    ImageURL = await _imageService.SaveImageFromWeb(productDto.Images.FirstOrDefault(), productDto.Title)
                 };
 
                 var categoryName = CapitalizeFirstLetter(productDto.Category);
@@ -62,31 +63,6 @@ namespace Store.Services.Products
                 await _context.Products.AddAsync(product);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        private async Task<string> SaveImage(string imageUrl, string productName)
-        {
-            if (imageUrl == null)
-            {
-                return @"/img/placeholder.jpg";
-            }
-
-            var response = await _httpClient.GetAsync(imageUrl);
-
-            response.EnsureSuccessStatusCode();
-
-            var bytes = await response.Content.ReadAsByteArrayAsync();
-
-            var fileExtension = Path.GetExtension(new Uri(imageUrl).AbsolutePath);
-            var fileName = productName.ToLower().Replace(" ", "-").Replace("/", "-") + fileExtension;
-
-            var filePath = Path.Combine(_environment.ContentRootPath, "wwwroot", "img", fileName);
-
-            await File.WriteAllBytesAsync(filePath, bytes);
-
-            var path = "/img/" + fileName;
-
-            return path;
         }
 
         private string CapitalizeFirstLetter(string input)

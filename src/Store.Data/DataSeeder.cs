@@ -51,11 +51,11 @@ namespace Store.Data
 
         private async Task SeedAdminUserAsync()
         {
-            if (await _userManager.FindByNameAsync("admin") == null)
+            if (await _userManager.FindByNameAsync("admin@example.com") == null)
             {
                 var user = new IdentityUser()
                 {
-                    UserName = "admin",
+                    UserName = "admin@example.com",
                     Email = "admin@example.com",
                 };
 

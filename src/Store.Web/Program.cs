@@ -28,7 +28,10 @@ builder.Services
 
 builder.Services.RegisterServices();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddViewOptions(options =>
+{
+    options.HtmlHelperOptions.ClientValidationEnabled = true;
+});
 
 var app = builder.Build();
 
@@ -50,9 +53,15 @@ app
     .UseAuthorization();
 
 app.MapControllerRoute(
+    name: "admin",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
+
 
 app.MapRazorPages();
 

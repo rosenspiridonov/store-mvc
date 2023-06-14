@@ -120,17 +120,3 @@ namespace Store.Web.Controllers
         }
     }
 }
-
-/* TODO
-
-1. Introduce - Alert js lib
-2. Add: Checkout
-3. Add: Admin area
-    3.1 Add product
-    3.2 Remove product
-    3.3 Edit product
-
-
-
-
-*/

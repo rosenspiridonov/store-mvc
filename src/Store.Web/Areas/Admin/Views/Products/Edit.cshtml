@@ -1,0 +1,71 @@
+﻿@model ProductEditModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Add Product</h2>
+
+        <form id="addProductForm" enctype="multipart/form-data" method="post" action="/admin/products/edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label for="productName">Име</label>
+                <input asp-for="Name" class="form-control" id="productName" placeholder="Enter product name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Описание</label>
+                <input asp-for="Description" class="form-control" id="productDescription" placeholder="Enter product description">
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Цена</label>
+                <input asp-for="Price" class="form-control" id="productPrice" placeholder="Enter product price">
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="categoryIds">Категории</label>
+                <select id="categoryIds" name="categoryIds" asp-for="@Model.CategoryIds" class="form-control" multiple>
+                    <option value="">-</option>
+
+                    @foreach (var category in Model.Categories)
+                    {
+                        @if (Model.CategoryIds.Contains(category.Id))
+                        {
+                            <option value="@category.Id" selected="selected">@category.Name</option>
+                        }
+
+                        else
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="@Model.CategoryIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="productImage">Product Image</label>
+                <input asp-for="@Model.Image" type="file" class="form-control" id="productImage">
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <div class="form-group row">
+                    <div class="col">
+                        <label class="d-block">Current Image:</label>
+                        <img src="@Model.ImageURL" alt="Product Image" style="width: 200px;">
+                    </div>
+                </div>
+            }
+
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.ImageURL)
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}

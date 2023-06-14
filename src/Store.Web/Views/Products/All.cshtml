@@ -20,15 +20,15 @@
                                 <option value="">-</option>
                             }
 
-                            @foreach (var cat in Model.Categories)
+                            @foreach (var category in Model.Categories)
                             {
-                                if (Model.SelectedCategory == cat)
+                                if (Model.SelectedCategory == category)
                                 {
-                                    <option value="@cat" selected>@cat</option>
+                                    <option value="@category" selected>@category</option>
                                 }
                                 else
                                 {
-                                    <option value="@cat">@cat</option>
+                                    <option value="@category">@category</option>
                                 }
                             }
                         </select>

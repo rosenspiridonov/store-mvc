@@ -36,9 +36,13 @@
                         </li>
                     </ul>
 
-
                     @if (!string.IsNullOrEmpty(userId))
                     {
+                        if (User.IsAdmin())
+                        {
+                            <a class="btn btn-dark me-3 text-light" href="/admin/products/all">Админ</a>
+                        }
+
                         <div class="cart-container pe-3">
                             <a asp-controller="Cart" asp-action="Index">
                                 <i class="fa fa-cart-shopping"></i>
@@ -46,7 +50,8 @@
                             </a>
                         </div>
                     }
-                    <partial name="_LoginPartial" />
+
+                    @await Html.PartialAsync("_LoginPartial", "dark")
                 </div>
             </div>
         </nav>
