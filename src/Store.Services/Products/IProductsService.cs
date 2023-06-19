@@ -10,7 +10,7 @@ namespace Store.Services.Products
 
         Task<ProductListingModel> GetFilteredProductsAsync(int pageNumber = 1, int pageSize = 12, string category = null);
 
-        Task<ProductEditModel> CreateProductAsync(ProductEditModel productModel);
+        Task<int> CreateProductAsync(ProductEditModel productModel);
 
         Task<int> UpdateProductAsync(ProductEditModel productModel);
 

@@ -18,23 +18,31 @@ namespace Store.Web.Areas.Admin.Controllers
             _categoryService = categoryService;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1)
         {
-            var products = await _productsService.GetFilteredProductsAsync();
+            var products = await _productsService.GetFilteredProductsAsync(pageNumber: page);
             return View(products);
         }
 
-        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            var product = new ProductModel();
+            var categories = await _categoryService.GetAllCategoriesAsync();
 
             if (!id.HasValue)
             {
-                return NotFound();
+                return View(new ProductEditModel
+                {
+                    Categories = categories,
+                    CategoryIds = new List<int>()
+                });
             }
 
-            product = await _productsService.GetByIdAsync(id.Value);
+            var product = await _productsService.GetByIdAsync(id.Value);
+
+            if (product is null)
+            {
+                return NotFound("Product not found");
+            }
 
             return View(new ProductEditModel
             {
@@ -44,7 +52,7 @@ namespace Store.Web.Areas.Admin.Controllers
                 Price = product.Price,
                 ImageURL = product.ImageURL,
                 CategoryName = product.CategoryName,
-                Categories = await _categoryService.GetAllCategoriesAsync(),
+                Categories = categories,
                 CategoryIds = await _categoryService.GetProductCategories(id.Value)
             });
         }

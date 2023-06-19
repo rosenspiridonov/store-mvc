@@ -1,0 +1,50 @@
+﻿@model ProductListingModel
+
+<!-- Pagination -->
+@if (Model.Pagination.TotalPages > 1)
+{
+    <nav class="d-flex justify-content-center mt-3 mb-5">
+        <ul class="pagination">
+            @if (Model.Pagination.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.Pagination.CurrentPage - 1, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.Pagination.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = i, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })">@i</a>
+                </li>
+            }
+
+            @if (Model.Pagination.CurrentPage < Model.Pagination.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("All", "Products", new { page = Model.Pagination.CurrentPage + 1, pageSize = Model.Pagination.PageSize, category = Model.SelectedCategory })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

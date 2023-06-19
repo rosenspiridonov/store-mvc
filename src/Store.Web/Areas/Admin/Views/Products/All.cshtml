@@ -26,7 +26,14 @@
                 }
             </tbody>
         </table>
-        <button class="btn btn-primary" onclick="window.location.href='/ProductsAdmin/Add'">Add New Product</button>
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary" asp-action="Edit" asp-controller="Products" asp-area="Admin">Add New Product</a>
+            </div>
+            <div class="col">
+                <partial name="_PaginationPartial" model="@Model" />
+            </div>
+        </div>
     </div>
 </div>
 

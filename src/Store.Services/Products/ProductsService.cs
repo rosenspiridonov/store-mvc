@@ -90,9 +90,8 @@ namespace Store.Services.Products
             };
         }
 
-        public async Task<ProductEditModel> CreateProductAsync(ProductEditModel productModel)
+        public async Task<int> CreateProductAsync(ProductEditModel productModel)
         {
-            return null;
             var product = new Product
             {
                 Name = productModel.Name,
@@ -105,13 +104,15 @@ namespace Store.Services.Products
                 product.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
             }
 
-            // TODO: Process image
+            if (productModel.Image != null)
+            {
+                product.ImageURL = await _imageService.SaveImage(productModel.Image, product.Name);
+            }
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            productModel.Id = product.Id;
-            return productModel;
+            return product.Id;
         }
 
         public async Task<int> UpdateProductAsync(ProductEditModel productModel)
